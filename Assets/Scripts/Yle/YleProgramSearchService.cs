@@ -6,7 +6,6 @@ using MiniJSON;
 
 namespace YleService
 {
-    using JsonDictionary = Dictionary<string, object>;
 
     public class YleProgramSearchService : MonoBehaviour
     {
@@ -63,8 +62,8 @@ namespace YleService
             }
             else
             {
-                JsonDictionary jsonDictionary = Json.Deserialize(request.downloadHandler.text) as JsonDictionary;
-                YleSearchResults results = new YleSearchResults(jsonDictionary);
+                Dictionary<string, object> dict = Json.Deserialize(request.downloadHandler.text) as Dictionary<string, object>;
+                YleSearchResults results = new YleSearchResults(dict);
                 _currentOffset += results.Programs.Count;
                 Programs.AddRange(results.Programs);
                 EndReached = Programs.Count >= results.Meta.Count;

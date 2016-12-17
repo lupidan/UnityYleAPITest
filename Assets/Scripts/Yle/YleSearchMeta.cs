@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace YleService
 {
-    using JsonDictionary = Dictionary<string, object>;
 
     public struct YleSearchMeta {
         public string Query      { get; private set; }
@@ -12,14 +12,14 @@ namespace YleService
         public long ProgramCount { get; private set; }
         public long ClipCount    { get; private set; }
 
-        public YleSearchMeta(JsonDictionary jsonDictionary) : this()
+        public YleSearchMeta(Dictionary<string, object> dict) : this()
         {
-            Query = jsonDictionary["q"] as string;
-            Count = (long) jsonDictionary["count"];
-            ProgramCount = (long) jsonDictionary["program"];
-            ClipCount = (long) jsonDictionary["program"];
+            Query = dict["q"] as string;
+            Count = (long) dict["count"];
+            ProgramCount = (long) dict["program"];
+            ClipCount = (long) dict["program"];
 
-            string receivedOffset = jsonDictionary["offset"] as string;
+            string receivedOffset = dict["offset"] as string;
             if (receivedOffset != null)
             {
                 long offset = 0;
@@ -27,7 +27,7 @@ namespace YleService
                 Offset = offset;
             }
 
-            string receivedLimit = jsonDictionary["limit"] as string;
+            string receivedLimit = dict["limit"] as string;
             if (receivedLimit != null)
             {
                 long limit = 0;

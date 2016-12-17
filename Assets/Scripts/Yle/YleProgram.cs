@@ -2,8 +2,6 @@
 
 namespace YleService
 {
-    using JsonDictionary = Dictionary<string, object>;
-    using JsonArray = List<object>;
 
     public class YleProgram
     {
@@ -11,30 +9,30 @@ namespace YleService
         public string Title       { get; private set; }
         public string Description { get; private set; }
 
-        public static List<YleProgram> YleProgramsFromJsonArray(JsonArray jsonArray)
+        public static List<YleProgram> YleProgramsFromJsonArray(List<object> jsonArray)
         {
             List<YleProgram> programs = new List<YleProgram>();
             for (int i = 0; i < jsonArray.Count; i++)
             {
-                JsonDictionary programJsonDictionary = jsonArray[i] as JsonDictionary;
-                if (programJsonDictionary != null)
+                Dictionary<string, object> programDict = jsonArray[i] as Dictionary<string, object>;
+                if (programDict != null)
                 {
-                    programs.Add(new YleProgram(programJsonDictionary));
+                    programs.Add(new YleProgram(programDict));
                 }
             }
             return programs;
         }
 
-        public YleProgram(JsonDictionary jsonDictionary)
+        public YleProgram(Dictionary<string, object> jsonDictionary)
         {
             Identifier = jsonDictionary["id"] as string;
-            JsonDictionary titleJsonDictionary = jsonDictionary["title"] as JsonDictionary;
-            if (titleJsonDictionary != null)
-                Title = titleJsonDictionary["fi"] as string;
+            Dictionary<string, object> titleDict = jsonDictionary["title"] as Dictionary<string, object>;
+            if (titleDict != null)
+                Title = titleDict["fi"] as string;
 
-            JsonDictionary descriptionJsonDictionary = jsonDictionary["description"] as JsonDictionary;
-            if (descriptionJsonDictionary != null)
-                Description = descriptionJsonDictionary["fi"] as string;
+            Dictionary<string, object> descriptionDict = jsonDictionary["description"] as Dictionary<string, object>;
+            if (descriptionDict != null)
+                Description = descriptionDict["fi"] as string;
 
         }
     }

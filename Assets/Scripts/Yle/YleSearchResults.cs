@@ -2,25 +2,24 @@
 
 namespace YleService
 {
-    using JsonDictionary = Dictionary<string, object>;
-    using JsonArray = List<object>;
 
     public class YleSearchResults
     {
         public YleSearchMeta Meta        { get; private set; }
         public List<YleProgram> Programs { get; private set; }
 
-        public YleSearchResults(JsonDictionary jsonDictionary)
+        public YleSearchResults(Dictionary<string, object> dict)
         {
-            JsonDictionary metaJsonDictionary = jsonDictionary["meta"] as JsonDictionary;
-            if (metaJsonDictionary != null)
-                Meta = new YleSearchMeta(metaJsonDictionary);
+            Dictionary<string, object> metaDict = dict["meta"] as Dictionary<string, object>;
+            if (metaDict != null)
+                Meta = new YleSearchMeta(metaDict);
 
-            JsonArray dataJsonArray = jsonDictionary["data"] as JsonArray;
-            if (dataJsonArray != null)
-                Programs = YleProgram.YleProgramsFromJsonArray(dataJsonArray);
+            List<object> dataArray = dict["data"] as List<object>;
+            if (dataArray != null)
+                Programs = YleProgram.YleProgramsFromJsonArray(dataArray);
         }
     }
+
 }
 
 
