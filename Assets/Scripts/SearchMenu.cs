@@ -13,6 +13,7 @@ public class SearchMenu : MonoBehaviour, TableViewDataSource {
 	[SpaceAttribute(10)]
 	public GameObject CellPrefab;
 
+	// MonoBehaviour
     void Start ()
 	{
 		MainTableView.DataSource = this;

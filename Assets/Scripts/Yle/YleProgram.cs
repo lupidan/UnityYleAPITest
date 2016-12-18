@@ -37,7 +37,7 @@ namespace YleService
             Dictionary<string, object> descriptionDict = jsonDictionary["description"] as Dictionary<string, object>;
             object description = "UNKNOWN DESCRIPTION";
             if (descriptionDict != null && descriptionDict.Count > 0 && !descriptionDict.TryGetValue("fi", out description))
-                description = "NO FINNISH DESC.";
+                description = "NO FINNISH DESCRIPTION";
             Description = description as string;
 
         }
