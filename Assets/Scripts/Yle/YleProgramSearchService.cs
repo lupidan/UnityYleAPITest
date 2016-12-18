@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Events;
 using MiniJSON;
 
 namespace YleService
@@ -13,12 +14,16 @@ namespace YleService
         public string AppId = "YOURAPPID";
         public string AppKey = "YOURAPPKEY";
 
+        public UnityAction ProgramListWasUpdated;
+        public UnityAction<string> ProgramListFailedLoading;
+
         public List<YleProgram> Programs { get; private set; }
         public bool EndReached           { get; private set; }
 
         private string _currentQuery;
         private long _currentLimit;
         private long _currentOffset;
+        private bool _loading;
 
         void Start()
         {
@@ -40,25 +45,31 @@ namespace YleService
 
             EndReached = false;
             Programs = new List<YleProgram>();
+
+            if (ProgramListWasUpdated != null)
+                ProgramListWasUpdated();
         }
 
         public void LoadProgramBatch()
         {
-            StartCoroutine(PerformRequestForNextBatch());
+            if (!_loading)
+                StartCoroutine(PerformRequestForNextBatch());
         }
 
         private IEnumerator PerformRequestForNextBatch()
         {
+            _loading = true;
+            
             object[] args = {BaseUrl, _currentQuery, _currentLimit, _currentOffset, AppKey, AppId};
             string url = string.Format("{0}/v1/programs/items.json?q={1}&limit={2}&offset={3}&app_key={4}&app_id={5}", args);
-            Debug.Log(url);
 
             UnityWebRequest request = UnityWebRequest.Get(url);
             yield return request.Send();
 
             if(request.isError)
             {
-                Debug.Log(request.error);
+                if (ProgramListFailedLoading != null)
+                    ProgramListFailedLoading(request.error);
             }
             else
             {
@@ -68,11 +79,11 @@ namespace YleService
                 Programs.AddRange(results.Programs);
                 EndReached = Programs.Count >= results.Meta.Count;
 
-                for (int i = 0; i < Programs.Count; i++)
-                {
-                    Debug.Log(Programs[i].Title);
-                }
+                if (ProgramListWasUpdated != null)
+                    ProgramListWasUpdated();
             }
+
+            _loading = false;
         }
 
     }

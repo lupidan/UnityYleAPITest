@@ -711,8 +711,9 @@ GameObject:
   - component: {fileID: 1418363512}
   - component: {fileID: 1418363514}
   - component: {fileID: 1418363513}
+  - component: {fileID: 1418363515}
   m_Layer: 5
-  m_Name: RootPanel
+  m_Name: SearchMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -771,6 +772,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1418363511}
+--- !u!114 &1418363515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1418363511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 715f533565c1849abba89c8af27d05b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainTableView: {fileID: 1542331401}
+  SearchService: {fileID: 1291043}
+  CellPrefab: {fileID: 1604716375948698, guid: a2eb760f12b164bc5887ae9889ac24d4, type: 2}
 --- !u!1 &1439925827
 GameObject:
   m_ObjectHideFlags: 0
@@ -863,6 +878,7 @@ GameObject:
   - component: {fileID: 1542331398}
   - component: {fileID: 1542331400}
   - component: {fileID: 1542331399}
+  - component: {fileID: 1542331401}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -923,6 +939,17 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+--- !u!114 &1542331401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1542331397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605056e68e6684f638dc87d9fb37632a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1805597910
 GameObject:
   m_ObjectHideFlags: 0
