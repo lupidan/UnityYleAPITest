@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace YleService
 {
@@ -26,13 +27,18 @@ namespace YleService
         public YleProgram(Dictionary<string, object> jsonDictionary)
         {
             Identifier = jsonDictionary["id"] as string;
+
             Dictionary<string, object> titleDict = jsonDictionary["title"] as Dictionary<string, object>;
-            if (titleDict != null)
-                Title = titleDict["fi"] as string;
+            object title = "UNKNOWN TITLE";
+            if (titleDict != null &&  titleDict.Count > 0 &&  !titleDict.TryGetValue("fi", out title))
+                title = "NO FINNISH TITLE";
+            Title = title as string;
 
             Dictionary<string, object> descriptionDict = jsonDictionary["description"] as Dictionary<string, object>;
-            if (descriptionDict != null)
-                Description = descriptionDict["fi"] as string;
+            object description = "UNKNOWN DESCRIPTION";
+            if (descriptionDict != null && descriptionDict.Count > 0 && !descriptionDict.TryGetValue("fi", out description))
+                description = "NO FINNISH DESC.";
+            Description = description as string;
 
         }
     }

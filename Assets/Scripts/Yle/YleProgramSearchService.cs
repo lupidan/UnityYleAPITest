@@ -19,11 +19,11 @@ namespace YleService
 
         public List<YleProgram> Programs { get; private set; }
         public bool EndReached           { get; private set; }
+        public bool IsLoading            { get; private set; }
 
         private string _currentQuery;
         private long _currentLimit;
         private long _currentOffset;
-        private bool _loading;
 
         void Start()
         {
@@ -52,14 +52,14 @@ namespace YleService
 
         public void LoadProgramBatch()
         {
-            if (!_loading)
+            if (!IsLoading)
                 StartCoroutine(PerformRequestForNextBatch());
         }
 
         private IEnumerator PerformRequestForNextBatch()
         {
-            _loading = true;
-            
+            IsLoading = true;
+
             object[] args = {BaseUrl, _currentQuery, _currentLimit, _currentOffset, AppKey, AppId};
             string url = string.Format("{0}/v1/programs/items.json?q={1}&limit={2}&offset={3}&app_key={4}&app_id={5}", args);
 
@@ -83,7 +83,7 @@ namespace YleService
                     ProgramListWasUpdated();
             }
 
-            _loading = false;
+            IsLoading = false;
         }
 
     }

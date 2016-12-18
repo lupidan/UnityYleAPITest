@@ -784,6 +784,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainTableView: {fileID: 1542331401}
+  MainScrollRect: {fileID: 564189039}
+  SearchInputField: {fileID: 753486398}
+  SearchButton: {fileID: 2083268210}
   SearchService: {fileID: 1291043}
   CellPrefab: {fileID: 1604716375948698, guid: a2eb760f12b164bc5887ae9889ac24d4, type: 2}
 --- !u!1 &1439925827
