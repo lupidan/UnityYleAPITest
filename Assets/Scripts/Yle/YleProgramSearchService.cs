@@ -25,18 +25,6 @@ namespace YleService
         private long _currentLimit;
         private long _currentOffset;
 
-        void Start()
-        {
-            InitializeProgramSearch("how", 10);
-            LoadProgramBatch();
-        }
-
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-                LoadProgramBatch();
-        }
-
         public void InitializeProgramSearch(string query, int limit)
         {
             _currentOffset = 0;
@@ -52,7 +40,7 @@ namespace YleService
 
         public void LoadProgramBatch()
         {
-            if (!IsLoading)
+            if (!IsLoading && !string.IsNullOrEmpty(_currentQuery))
                 StartCoroutine(PerformRequestForNextBatch());
         }
 
