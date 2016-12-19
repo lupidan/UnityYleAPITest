@@ -44,7 +44,7 @@ namespace YleService
         {
             IsLoading = true;
 
-            object[] args = {BaseUrl, _currentQuery, _currentLimit, _currentOffset, AppKey, AppId};
+            object[] args = {BaseUrl, WWW.EscapeURL(_currentQuery), _currentLimit, _currentOffset, AppKey, AppId};
             string url = string.Format("{0}/v1/programs/items.json?q={1}&limit={2}&offset={3}&app_key={4}&app_id={5}", args);
 
             UnityWebRequest request = UnityWebRequest.Get(url);
