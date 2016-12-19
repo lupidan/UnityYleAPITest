@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using YleService;
 
-public class SearchMenu : MonoBehaviour, TableViewDataSource {
-
+public class SearchMenu : MonoBehaviour, TableViewDataSource
+{
 	public TableView MainTableView;
 	public ScrollRect MainScrollRect;
 	public InputField SearchInputField;
@@ -17,9 +18,7 @@ public class SearchMenu : MonoBehaviour, TableViewDataSource {
     void Start ()
 	{
 		MainTableView.DataSource = this;
-		SearchService.ProgramListWasUpdated += ProgramListWasUpdated;
-		SearchService.ProgramListFailedLoading += ProgramListFailedLoading;
-
+		SearchService.LoadProgramBatchFinished += LoadProgramBatchFinished;
 		SearchButton.onClick.AddListener(SearchButtonWasSelected);
 	}
 
@@ -30,20 +29,22 @@ public class SearchMenu : MonoBehaviour, TableViewDataSource {
 	}
 
 	// Events
-	private void ProgramListWasUpdated()
+	private void LoadProgramBatchFinished(List<YleProgram> programs, string error)
 	{
-		 MainTableView.ReloadData();
-	}
-
-	private void ProgramListFailedLoading(string error)
-	{
-		 Debug.LogError(error);
+		if (programs != null && error == null)
+			MainTableView.SetupMissingCells();
+		else
+			Debug.LogError(error);
 	}
 
 	private void SearchButtonWasSelected()
 	{
 		if (!string.IsNullOrEmpty(SearchInputField.text))
+		{
 			SearchService.InitializeProgramSearch(SearchInputField.text, 10);
+			SearchService.LoadProgramBatch();
+			MainTableView.ReloadData();
+		}	
 	}
 
 	// TableViewDataSource implementation

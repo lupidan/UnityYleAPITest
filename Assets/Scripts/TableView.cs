@@ -10,25 +10,39 @@ public interface TableViewDataSource
 [RequireComponent (typeof (VerticalLayoutGroup))]
 public class TableView : MonoBehaviour
 {
-
 	public TableViewDataSource DataSource;
-	private VerticalLayoutGroup _layoutGroup;
 
+	private VerticalLayoutGroup _layoutGroup;
+	private int _currentActiveCells;
+
+	// MonoBehaviour
 	void Awake()
 	{
 		_layoutGroup = GetComponent<VerticalLayoutGroup>();
 	}
 
+	// Public methods
+	public void SetupMissingCells()
+	{
+		int numberOfElements = DataSource.NumberOfElementsInTableView(this);
+		SetupCells(_currentActiveCells, numberOfElements - _currentActiveCells);
+		_currentActiveCells = numberOfElements;
+	}
+
 	public void ReloadData()
 	{
+		int numberOfElements = DataSource.NumberOfElementsInTableView(this);
 		DeactivateAllCells();
-		SetupCells();
+		SetupCells(0, numberOfElements);
+		_currentActiveCells = numberOfElements;
 	}
 
 	public void ForceReloadData()
 	{
+		int numberOfElements = DataSource.NumberOfElementsInTableView(this);
 		DestroyAllCells();
-		SetupCells();
+		SetupCells(0, numberOfElements);
+		_currentActiveCells = numberOfElements;
 	}
 
 	public GameObject DequeueCellAtIndex(int index)
@@ -46,22 +60,25 @@ public class TableView : MonoBehaviour
 		return null;
 	}
 
+	// Private methods
 	private void DeactivateAllCells()
 	{
 		for (int i = 0; i < transform.childCount; ++i)
 			transform.GetChild(i).gameObject.SetActive(false);
+		_currentActiveCells = 0;
 	}
 
 	private void DestroyAllCells()
 	{
 		for (int i = transform.childCount - 1; i >= 0; --i)
 			Destroy(transform.GetChild(i).gameObject);
+		_currentActiveCells = 0;
 	}
 
-	private void SetupCells()
+	private void SetupCells(int startIndex, int size)
 	{
-		int numberOfElements = DataSource.NumberOfElementsInTableView(this);
-		for (int i = 0; i < numberOfElements; ++i)
+		int numberOfElements = startIndex + size;
+		for (int i = startIndex; i < numberOfElements; ++i)
 			SetupCellAtIndex(i);
 	}
 

@@ -14,8 +14,7 @@ namespace YleService
         public string AppId = "YOURAPPID";
         public string AppKey = "YOURAPPKEY";
 
-        public UnityAction ProgramListWasUpdated;
-        public UnityAction<string> ProgramListFailedLoading;
+        public UnityAction<List<YleProgram>, string> LoadProgramBatchFinished;
 
         public List<YleProgram> Programs { get; private set; }
         public bool EndReached           { get; private set; }
@@ -33,9 +32,6 @@ namespace YleService
 
             EndReached = false;
             Programs = new List<YleProgram>();
-
-            if (ProgramListWasUpdated != null)
-                ProgramListWasUpdated();
         }
 
         public void LoadProgramBatch()
@@ -56,8 +52,8 @@ namespace YleService
 
             if(request.isError)
             {
-                if (ProgramListFailedLoading != null)
-                    ProgramListFailedLoading(request.error);
+                if (LoadProgramBatchFinished != null)
+                    LoadProgramBatchFinished(null, request.error);
             }
             else
             {
@@ -67,8 +63,8 @@ namespace YleService
                 Programs.AddRange(results.Programs);
                 EndReached = Programs.Count >= results.Meta.Count;
 
-                if (ProgramListWasUpdated != null)
-                    ProgramListWasUpdated();
+                if (LoadProgramBatchFinished != null)
+                    LoadProgramBatchFinished(results.Programs, null);
             }
 
             IsLoading = false;
